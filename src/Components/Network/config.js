@@ -1,0 +1,1 @@
+export const API_URI = "https://tanzabook.herokuapp.com/api/v1"
