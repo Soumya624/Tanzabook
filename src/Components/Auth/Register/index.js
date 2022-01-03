@@ -37,7 +37,7 @@ export default function Register() {
             "email": data.email,
             "mobile": data.mobile
         }
-        const url= "https://formsubmit.co/ajax/soumyatarafder624@gmail.com";
+        const url= "https://formsubmit.co/ajax/cc84e819e6ab09db0a69ea42ed226ed4";
         axios.post(url,formData)
         .then(res=> {console.log(res.data);})
         .catch(err=> {console.log(err);});
