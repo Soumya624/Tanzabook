@@ -44,7 +44,7 @@ export default function SideNav(props) {
                     <button type="button" className="btn btn-outline-secondary add-btn" onClick={() => onClick()}>Add</button>
                 </div>
             </div>
-            <ul>
+            {/* <ul>
                 {
                     props.folder.map(x => {
                         return (
@@ -53,7 +53,7 @@ export default function SideNav(props) {
                         )
                     })
                 }
-            </ul>
+            </ul> */}
         </div>
     )
 }

@@ -339,7 +339,7 @@ class App extends Component<Props, State> {
       }
     }).then(result => {
       if (result.status === 200) {
-        console.log(result.data.data)
+        console.log(result.data);
         this.setState({ recordedFile: result.data.data.url, annotation_id: result.data.data.id });
         this.addHighlight({ content, position, comment });
         // window.location.reload()
