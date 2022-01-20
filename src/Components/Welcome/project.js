@@ -20,7 +20,7 @@ const customStyles = {
     width: "80%",
   },
 };
-
+var arr = [];
 export default function Project() {
   let data = useLocation();
 
@@ -51,7 +51,7 @@ export default function Project() {
   const [loader, setLoader] = useState(false);
   const [testid, setTestid] = useState("");
   const [testitem, setTestitem] = useState("");
-
+  const [folder12, setFolder12] = useState([]);
   useEffect(() => {
     getFolderList();
   }, []);
@@ -83,14 +83,17 @@ export default function Project() {
     e.preventDefault();
     console.log(otherMail);
     const user_reqid = otherMail;
-    const id = global_id;
-    const pro_id = global_item.project_id;
-    console.log(id, pro_id);
+    const user_ids = user_reqid.split(",");
+    const document_id = global_id;
+    const project_id = global_item.project_id;
+    console.log(document_id, project_id);
     axios
       .post(
-        `${API_URI}/documents/${id}/share?project_id=${pro_id}`,
+        `${API_URI}/documents/${document_id}/share?project_id=${project_id}`,
         {
-          user_reqid,
+          user_ids,
+          document_id,
+          project_id,
         },
         {
           headers: {
@@ -235,12 +238,14 @@ export default function Project() {
                         <button
                           type="button"
                           onClick={() => openModal1(x.id, x)}
+                          style={{padding:"2%", margin: "1%"}}
                         >
                           Share
                         </button>
                         <button
                           type="button"
                           onClick={() => handleRemove(x.id, x)}
+                          style={{padding:"2%", margin: "1%"}}
                         >
                           Remove{" "}
                         </button>
@@ -304,19 +309,40 @@ export default function Project() {
         onRequestClose={closeModal1}
         style={customStyles}
         contentLabel="Example Modal"
+        style={{overflowY:"scroll"}}
       >
         <div
           className="col-12"
-          style={{ border: "3px solid #DDE0E3", padding: "10px" }}
+          style={{ border: "3px solid #DDE0E3", padding: "10px", height:"100%"}}
         >
           <h4>Share Tanzabook</h4>
           <form onSubmit={(e) => handleSubmit1(e)}>
             <div className="form-group">
               <input
                 type="text"
-                placeholder="Enter The User Id On Which You Want to Share"
+                placeholder="Enter The User ID of That Person"
                 name="emailShare"
-                onChange={(e) => setOtherMail(e.target.value)}
+                onChange={(e) => {
+                  setOtherMail(e.target.value);
+                  axios
+                    .get(`${API_URI}/users?search=${e.target.value}`, {
+                      headers: {
+                        Authorization: localStorage.getItem("tbztoken"),
+                      },
+                    })
+                    .then((result) => {
+                      if (result.status === 200) {
+                        arr = result.data.data.map(
+                          (x) => x.email + "(" + x.id + ")"
+                        );
+                        console.log(arr);
+                        setFolder12(arr);
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }}
                 className="form-control mt-2 mb-3"
               />
               <button
@@ -328,6 +354,15 @@ export default function Project() {
               </button>
             </div>
           </form>
+          <br/>
+          {folder12.map((x) => {
+            return (
+              <div>
+                <li>{x}</li>
+              </div>
+            );
+          })}
+          {/* <div id="abc" style={{width:"100%"}}>Available ID: [{arr}]</div> */}
         </div>
       </Modal>
     </div>
